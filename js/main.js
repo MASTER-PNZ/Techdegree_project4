@@ -5,14 +5,13 @@
 //constants variables for page divs
 
 const startPage = $('#start');
-
-
 const gamePage = $('#board');
-gamePage.hide();
-
 const gameEndPage = $('#finish');
-gameEndPage.hide();
 
+$(function(){
+    gamePage.hide();
+    gameEndPage.hide();
+});
 
 // Classes for Players and their moves
 
