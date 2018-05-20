@@ -139,8 +139,14 @@ h1{
       background-image: url(../img/x.svg); }
 
 
-// Added CSS Styling for inputs and buttons
+/* Added styles */
 #user_name {
-margin-top: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;}
 
+.player1Name {
+  font-weight: bold;
+  text-align: margin-left;
+  margin-top: 20px;
+  margin-left: 25.594px;
 }

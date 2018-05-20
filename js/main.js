@@ -14,23 +14,31 @@ $(function(){
 });
 
 $('#user_name').focus();
-//function to start game
+//function to start game and validate user input.
 
 $('.button').on("click", function (){
+  const player1Name =  $('#user_name').val();
+  if (player1Name == ""){
+    return false;
+  } else if (player1Name.length > 0){
   startPage.hide();
   gamePage.show();
-  const player1Name =  $('#user_name').val();
-  $('#player1').append(player1Name);
+  $('#player1').after(`<div class="player1Name" style="color:black;">${player1Name}</div>`);
+  }
 });
 
 $('#player1').addClass("active");
 
-$('#player2').addClass("active");
-$('#player1').removeClass("active");
+
 
 // variables for html player elements
 
 // Game play functionality
+
+function gamePlay(){
+
+
+}
 
 // Classes for Players and their moves
 
