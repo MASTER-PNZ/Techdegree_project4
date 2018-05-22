@@ -140,6 +140,10 @@ h1{
 
 
 /* Added styles */
+.disabled {
+  pointer-events: none;
+}
+
 #user_name {
   margin-top: 20px;
   margin-bottom: 20px;}
@@ -149,4 +153,11 @@ h1{
   text-align: margin-left;
   margin-top: 20px;
   margin-left: 25.594px;
+}
+
+.player2Name {
+  font-weight: bold;
+  text-align: margin-right;
+  margin-top: 20px;
+  margin-right: 25.594px;
 }

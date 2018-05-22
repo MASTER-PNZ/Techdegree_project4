@@ -7,10 +7,13 @@ const gamePage = $('#board');
 const gameEndPage = $('#finish');
 const userInput = $('#user_name');
 const boardSqrs = $('.boxes');
+const boardSqr = $('.box');
 const oPlayer = $('#player1');
 const xPlayer = $('#player2');
 const xPlayerDiv = `<div class="player2Name" style="color:black;">Computer Player</div>`;
 let currentPlayer = oPlayer;
+let gameMove = 0;
+const winBoard = [];
 
 $(function(){
     gamePage.hide();
@@ -31,54 +34,47 @@ $('.button').on("click", function (){
   gamePage.show();
   }
   oPlayer.after(oPlayerDiv);
-
+  //setting user player to "O".
+  oPlayer.addClass('active');
 });
 
-currentPlayer.addClass('active');
 
-// Background Hover function
 
-boardSqrs.mouseover(function(event){
+// Background Hover functions
+
+boardSqr.mouseover(function(){
+  if($(this).hasClass('disabled')){
+    return;
+  }
   if(currentPlayer == oPlayer){
-    event.target.style.backgroundImage = 'url("./img/o.svg")';
+    $(this).css('background-image', 'url("./img/o.svg")');
   } else if (currentPlayer == xPlayer) {
-    event.target.style.backgroundImage = 'url("./img/x.svg")';
+    $(this).css('background-image',  'url("./img/x.svg")');
   }
 });
 
-boardSqrs.mouseout(function(event){
+boardSqr.mouseout(function(){
   if(currentPlayer.hasClass('active')){
-    event.target.style.backgroundImage = '';
+      $(this).css('background-image', '');
   }
 });
 
-
-
-// Game play functionality
-
-function gamePlay(){
-  if(currentPlayer == oPlayer) {
-    boardSqrs.on('click', function(event){
-      event.target.addClass('box-filled-1');
-    })
+// Game play function for player1 - user.
+boardSqr.click(function(){
+  if(currentPlayer == oPlayer){
+    $(this).addClass('box-filled-1 disabled');
+    currentPlayer = xPlayer;
+    oPlayer.removeClass('active');
+    xPlayer.addClass('active');
+  } else if (currentPlayer == xPlayer) {
+    $(this).addClass('box-filled-2 disabled');
+    currentPlayer = oPlayer;
+    xPlayer.removeClass('active');
+    oPlayer.addClass('active');
   }
-}
+});
 
-// Classes for Players and their moves
-
-class player {
-  constructor() {
-
-  }
-}
-
-// Game Board array class
-
-class gameBoard {
-  constructor() {
-
-  }
-}
+// Game play function for computer turn.
 
 // function for game end state win or draw
 
@@ -86,15 +82,6 @@ function endGameState () {
 
 }
 
-
-
-// function for computer player logic
-
-function computerLogic() {}
-
-
-
-//
 
 
 }();
