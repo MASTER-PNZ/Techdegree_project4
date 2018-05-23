@@ -1,7 +1,9 @@
 // An IIFE to encapsulate the Tic-Tac-Toe Program in module format.
 
 !function() {
+
 //constants variables for page divs
+
 const startPage = $('#start');
 const gamePage = $('#board');
 const gameEndPage = $('#finish');
@@ -16,16 +18,16 @@ let gameMoves = 0;
 let randomSqr;
 const winBoard = [
   // winning rows
-  [boardSqr[0], boardSqr[1], boardSqr[2]],
-  [boardSqr[3], boardSqr[4], boardSqr[5]],
-  [boardSqr[6], boardSqr[7], boardSqr[8]],
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
   // winning columns
-  [boardSqr[0], boardSqr[3], boardSqr[6]],
-  [boardSqr[1], boardSqr[4], boardSqr[7]],
-  [boardSqr[2], boardSqr[5], boardSqr[8]],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
   // winning diagonals
-  [boardSqr[0], boardSqr[4], boardSqr[8]],
-  [boardSqr[2], boardSqr[4], boardSqr[6]]
+  [0, 4, 8],
+  [2, 4 ,6]
 ];
 let player1Board = [];
 let player2Board = [];
@@ -34,7 +36,9 @@ $(function(){
     gamePage.hide();
     gameEndPage.hide();
 });
+
 // adds focus to user input
+
 userInput.focus();
 
 //function to start game and validate user input.
@@ -50,7 +54,7 @@ $('.button').on("click", function (){
       gamePage.show();
   }
   oPlayer.after(oPlayerDiv);
-  //setting user player to "O".
+  // setting user player to "O".
   oPlayer.addClass('active');
 });
 
@@ -73,58 +77,81 @@ boardSqr.mouseout(function(){
   }
 });
 
+// Computer move function chooses a random available square
+
 let compMove = function() {
   do {
    randomSqr = Math.floor(Math.random() * 9);
- } while ( currentPlayer == xPlayer && boardSqr.eq(randomSqr).hasClass('disabled') );
+ } while ( (currentPlayer == xPlayer && boardSqr.eq(randomSqr).hasClass('disabled')) && gameMoves < 5);
    if (currentPlayer == xPlayer && !boardSqr.eq(randomSqr).hasClass('disabled')) {
     boardSqr.eq(randomSqr).addClass('box-filled-2 disabled');
     currentPlayer = oPlayer;
     xPlayer.removeClass('active');
     oPlayer.addClass('active');
-    gameMoves += 1;
-    player2Board.push(boardSqr.eq(randomSqr));
+    endGameState();
   }
 }
+
 // Game play function for player1 - user.
+
 boardSqr.click(function(){
   if(currentPlayer == oPlayer){
     $(this).addClass('box-filled-1 disabled');
-    currentPlayer = xPlayer;
     oPlayer.removeClass('active');
     xPlayer.addClass('active');
     gameMoves += 1;
-    player1Board.push($(this));
+    endGameState();
+    currentPlayer = xPlayer;
   }
-
-  setTimeout(compMove, 1500);
   endGameState();
+  setTimeout(compMove, 1500);
+
 });
 
-
-// function for game end state win or draw
-
-function endGameState () {
-  if(gameMoves == 9){
-    currentPlayer = '';
-    startPage.hide();
-    gamePage.hide();
-    gameEndPage.addClass('screen-win-tie');
-    gameEndMessage.text(`It's a Tie!`);
-    gameEndPage.show();
-  } // else if (winBoard.length.hasClass('box-filled-1')){
-  //   gamePage.hide();
-  //   startPage.hide();
-  //   gameEndPage.addClass('screen-win-one');
-  //   gameEndMessage.text(`${player1Name} Wins!`);
-  //   gameEndPage.show();
-  // }
+// function that matches winning array and player moves array
+const endGameState = () => {
+  let winPlayer = '';
+  let playerMoves = 0;
+  for ( let i = 0; i < boardSqr.length; i +=1) {
+    if ( $(boardSqr[i]).hasClass('disabled') ) {
+      playerMoves += 1;
+    }
+  }
+  winBoard.forEach( combo => {
+    if($(boardSqr[combo[0]]).hasClass('box-filled-1') &&
+       $(boardSqr[combo[1]]).hasClass('box-filled-1') &&
+       $(boardSqr[combo[2]]).hasClass('box-filled-1') ) {
+         winPlayer = 'player1';
+         currentPlayer = '';
+         gamePage.hide();
+         startPage.hide();
+         gameEndPage.addClass('screen-win-one');
+         gameEndMessage.text(`${$(userInput).val()} Wins!`);
+         gameEndPage.show();
+    } else if($(boardSqr[combo[0]]).hasClass('box-filled-2') &&
+       $(boardSqr[combo[1]]).hasClass('box-filled-2') &&
+       $(boardSqr[combo[2]]).hasClass('box-filled-2') ) {
+        winPlayer = 'player2'
+        currentPlayer = '';
+        gamePage.hide();
+        startPage.hide();
+        gameEndPage.addClass('screen-win-two');
+        gameEndMessage.text(`The Computer Wins!`);
+        gameEndPage.show();
+    } else if ( gameMoves == 5 && winPlayer == '') {
+        currentPlayer = '';
+        startPage.hide();
+        gamePage.hide();
+        gameEndPage.addClass('screen-win-tie');
+        gameEndMessage.text(`It's a Tie!`);
+        gameEndPage.show();
+      }
+  });
 }
 
 // When user clicks button the page is refreshed for the next game.
 $('.button:contains("New game")').click(function(){
   window.location.reload(true);
 });
-
 
 }();
