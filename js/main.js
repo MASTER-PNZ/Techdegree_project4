@@ -2,7 +2,7 @@
 
 !function() {
 
-//constants variables for page divs
+// Variables for HTML Elements
 
 const startPage = $('#start');
 const gamePage = $('#board');
@@ -13,9 +13,13 @@ const boardSqrs = $('.boxes');
 const boardSqr = $('.box');
 const oPlayer = $('#player1');
 const xPlayer = $('#player2');
+
+// Variables for gameplay
+
 let currentPlayer = oPlayer;
 let gameMoves = 0;
 let randomSqr;
+// Array that represents the game board winning combination squares
 const winBoard = [
   // winning rows
   [0, 1, 2],
@@ -29,19 +33,18 @@ const winBoard = [
   [0, 4, 8],
   [2, 4 ,6]
 ];
-let player1Board = [];
-let player2Board = [];
 
+// Self-invoking function to hide game and end screen divs
 $(function(){
     gamePage.hide();
     gameEndPage.hide();
 });
 
-// adds focus to user input
+// adds focus to text field.
 
 userInput.focus();
 
-//function to start game and validate user input.
+// function to start game, recieve and validate user input.
 
 $('.button').on("click", function (){
   let player1Name =  userInput.val();
@@ -117,10 +120,12 @@ const endGameState = () => {
       playerMoves += 1;
     }
   }
-  winBoard.forEach( combo => {
+winBoard.forEach( combo => {
+  // checks array of array and matches 3 filled boxes across each winning combo.
     if($(boardSqr[combo[0]]).hasClass('box-filled-1') &&
        $(boardSqr[combo[1]]).hasClass('box-filled-1') &&
        $(boardSqr[combo[2]]).hasClass('box-filled-1') ) {
+         // player 1 win page
          winPlayer = 'player1';
          currentPlayer = '';
          gamePage.hide();
@@ -131,7 +136,8 @@ const endGameState = () => {
     } else if($(boardSqr[combo[0]]).hasClass('box-filled-2') &&
        $(boardSqr[combo[1]]).hasClass('box-filled-2') &&
        $(boardSqr[combo[2]]).hasClass('box-filled-2') ) {
-        winPlayer = 'player2'
+        // player 2 win page
+        winPlayer = 'player2';
         currentPlayer = '';
         gamePage.hide();
         startPage.hide();
@@ -139,6 +145,7 @@ const endGameState = () => {
         gameEndMessage.text(`The Computer Wins!`);
         gameEndPage.show();
     } else if ( gameMoves == 5 && winPlayer == '') {
+        // tie page
         currentPlayer = '';
         startPage.hide();
         gamePage.hide();
@@ -146,12 +153,12 @@ const endGameState = () => {
         gameEndMessage.text(`It's a Tie!`);
         gameEndPage.show();
       }
-  });
+   });
 }
 
 // When user clicks button the page is refreshed for the next game.
 $('.button:contains("New game")').click(function(){
   window.location.reload(true);
 });
-
+// end of module
 }();
